@@ -7,8 +7,27 @@
 //nominal
 //note
 //date (format : “yyyy-mm-dd”)
+const data = [{
+    id:1,
+    type:"",
+    nominal: 0,
+    note:"",
+    date:new Date("")
+}]
 //Menampilkan data pengeluaran dan pemasukan dan menampilkan sisa uang terakhir
 //Menampilkan data berdasarkan rentang tanggal mulai dan akhir yang diberikan
+const filterDate = (data, startDate, endDate) => {
+  let start = new Date(startDate).getTime();
+  let end = new Date(endDate).getTime();
+  return data.filter((d) => {
+    let date = new Date(d.date);
+    return date >= start && date <= end;
+  });
+};
+let startDate = prompt(`Masukkan tanggal awal pencarian`)
+let endDate = prompt(`Masukkan tanggal akhir pencarian`)
+alert(filterDate(data,startDate,endDate))
+
 //Memperbarui data, yang bisa diperbarui :
 //nominal
 //note
