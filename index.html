@@ -116,4 +116,21 @@
     
 
 
+
+
+//Fungsi Menampilkan data berdasarkan rentang tanggal mulai dan akhir yang diberikan
+const filterDate = (data, startDate, endDate) => {
+  let start = new Date(startDate).getTime();
+  let end = new Date(endDate).getTime();
+  return data.filter((d) => {
+    let date = new Date(d.date);
+    return date >= start && date <= end;
+  });
+};
+let startDate = prompt(`Masukkan tanggal awal pencarian`)
+let endDate = prompt(`Masukkan tanggal akhir pencarian`)
+alert(filterDate(data,startDate,endDate))
+
+
+
 </script>
