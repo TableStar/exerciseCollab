@@ -7,7 +7,7 @@
   //nominal
   //note
   //date (format : “yyyy-mm-dd”)
-  class  Data{
+  class Data {
     constructor() {
       this.transaksi = [];
       this.saldo = 0;
@@ -37,8 +37,26 @@
       this.infoSaldo();
       alert('Transaksi Berhasil.');
     }
-    
+    printDateMap = (data) => {
+      //let result bisa diganti dengan return baranges.. .join("n\")
+      let result = data.map((val, idx) => {
+        return `${idx + 1}. Transaksi tanggal ${val.date} : Rp. ${val.nominal.toLocaleString("id")}\n
+        type: ${val.type}\n
+        catatan: ${val.note}`
+      }
+      )
+      return result.join("\n")
+    }
     //Menampilkan data pengeluaran dan pemasukan dan menampilkan sisa uang terakhir
+    lihatTransaksinoAlert = () => {
+      //let result bisa diganti dengan return baranges.. .join("n\")
+      let result = this.transaksi.map((val, idx) => {
+        return `${idx + 1}. ID: ${val.id}| Anda melakukan: ${val.type}, Dengan Nominal: ${val.nominal.toLocaleString("id")}, Catatan: ${val.note}, Pada: ${val.date}`
+      }
+      )
+      return result.join("\n")
+    }
+
     lihatTransaksi() {
       this.transaksi.forEach((transaction) => {
         alert((`ID: ${transaction.id}, Anda melakukan : ${transaction.type}, Dengan Nominal: ${transaction.nominal.toLocaleString("id")}, Catatan: ${transaction.note}, Pada: ${transaction.date}`));
@@ -46,8 +64,34 @@
       alert(`Saldo anda adalah: ${this.saldo.toLocaleString("id")}`);
     }
 
+    //Fungsi Menampilkan data berdasarkan rentang tanggal mulai dan akhir yang diberikan
+    filterDate = (data, startDate, endDate) => {
+      let start = new Date(startDate).getTime();
+      let end = new Date(endDate).getTime();
+      return data.filter((d) => {
+        let date = new Date(d.date);
+        return date >= start && date <= end;
+      });
+    };
+
+    //Fungsi mengganti value
+    changeTransaksi = (changeId, changes) => {
+      const changeIndex = this.transaksi.findIndex((dataTransaksi => dataTransaksi.id == changeId))
+      if (changeId === -1) {
+        alert('ID tidak Ditemukan. Coba lagi!');
+      }
+      if (changes == "1") {
+        this.transaksi[parseInt(changeIndex)].nominal = prompt("Masukkan nominal terbaru")
+      }
+      else if (changes == "2") {
+        this.transaksi[parseInt(changeIndex)].note = prompt("Masukkan catatan baru")
+      }
+      else if (changes == "3") {
+        this.transaksi[parseInt(changeIndex)].date = prompt("Masukkan tanggal baru\n(yyyy-mm-dd)")
+      }
+    }
     hapusTransaksi() {
-      const hapusId = parseInt(prompt('Masukkan ID yang ingin dihapus:'));
+      const hapusId = parseInt(prompt('Masukkan ID transaksi yang ingin dihapus:'));
       const hapusIndex = this.transaksi.findIndex((dataTransaksi) => dataTransaksi.id === hapusId);
 
       if (hapusIndex === -1) {
@@ -63,7 +107,7 @@
         alert('Transaksi berhasil di hapus.');
       }
     }
-    
+
     infoSaldo() {
       this.saldo = this.transaksi.reduce((total, transaction) => {
         if (transaction.type === 'pemasukan') {
@@ -76,29 +120,41 @@
 
     mulaiTransaksi() {
       while (true) {
-        
+
         const choice = prompt(
-          'Pilih Menu:\n1. Tambah Saldo\n2. Lihat Saldo\n3. Hapus Saldo\n4. Keluar Aplikasi'
+          'Pilih Menu:\n1. Tambah Saldo\n2. Lihat Saldo\n3. Hapus Saldo\n4. Sortir data berdasarkan tanggal\n5.Perbarui data\n6. Keluar Aplikasi'
         );
 
         switch (choice) {
           case '1':
             this.tambahTransaksi();
             break;
-            case '2':
-              //Menampilkan data pengeluaran dan pemasukan dan menampilkan sisa uang terakhir
-              this.lihatTransaksi();
-              break;
-              case '3':
-            //Menampilkan data berdasarkan rentang tanggal mulai dan akhir yang diberikan
-            //Memperbarui data, yang bisa diperbarui :
-            //nominal
-            //note
-            //date
+          case '2':
+            //Menampilkan data pengeluaran dan pemasukan dan menampilkan sisa uang terakhir
+            this.lihatTransaksi();
+            break;
+          case '3':
             //Menghapus data yang dipilih 
             this.hapusTransaksi();
             break;
           case '4':
+            //Menampilkan data berdasarkan rentang tanggal mulai dan akhir yang diberikan
+            let startDate = prompt(`Masukkan tanggal awal pencarian\n(yyyy-mm-dd)`)
+            let endDate = prompt(`Masukkan tanggal akhir pencarian\n(yyyy-mm-dd)`)
+            let hasilDate = this.filterDate(this.transaksi, startDate, endDate)
+            alert(`menampilkan transaksi dari tanggal ${startDate} sampai tanggal ${endDate}:\n${this.printDateMap(hasilDate)}`)
+            break;
+          //Memperbarui data, yang bisa diperbarui :
+          //nominal
+          //note
+          //date
+          case '5':
+            let changeId = prompt(`Silahkan masukkan Id transaksi yang akan dirubah :\n${this.lihatTransaksinoAlert()}`)
+            let changes = prompt(`Silahkan pilih elemen yang akan diganti:\n1.Nominal\n2.Catatan\n3.Tanggal`)
+            this.changeTransaksi(changeId, changes)
+            alert(`Daftar transaksi:\n${this.lihatTransaksinoAlert()}`)
+            break;
+          case '6':
             if (confirm('Apakah yakin keluar Aplikasi?')) {
               alert('Terima Kasih Sudah menggunakan Aplikasi.');
               return;
@@ -113,7 +169,14 @@
 
   const go = new Data();
   go.mulaiTransaksi();
-    
+
+
+
+
+
+
+
+
 
 
 </script>
