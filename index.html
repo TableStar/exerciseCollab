@@ -76,18 +76,19 @@
 
     //Fungsi mengganti value
     changeTransaksi = (changeId, changes) => {
-      const changeIndex = this.transaksi.findIndex((dataTransaksi => dataTransaksi.id == changeId))
-      if (changeId === -1) {
+      //const changeIndex = this.transaksi.findIndex((dataTransaksi => dataTransaksi.id == changeId))
+      
+      /**if (changeId === -1) {
         alert('ID tidak Ditemukan. Coba lagi!');
-      }
+      }*/
       if (changes == "1") {
-        this.transaksi[parseInt(changeIndex)].nominal = prompt("Masukkan nominal terbaru")
+        this.transaksi[parseInt(changeId)].nominal = prompt("Masukkan nominal terbaru")
       }
       else if (changes == "2") {
-        this.transaksi[parseInt(changeIndex)].note = prompt("Masukkan catatan baru")
+        this.transaksi[parseInt(changeId)].note = prompt("Masukkan catatan baru")
       }
       else if (changes == "3") {
-        this.transaksi[parseInt(changeIndex)].date = prompt("Masukkan tanggal baru\n(yyyy-mm-dd)")
+        this.transaksi[parseInt(changeId)].date = prompt("Masukkan tanggal baru\n(yyyy-mm-dd)")
       }
     }
     hapusTransaksi() {
@@ -149,7 +150,8 @@
           //note
           //date
           case '5':
-            let changeId = prompt(`Silahkan masukkan Id transaksi yang akan dirubah :\n${this.lihatTransaksinoAlert()}`)
+            let changeI = prompt(`Silahkan masukkan Id transaksi yang akan dirubah :\n${this.lihatTransaksinoAlert()}`)
+            let changeId= parseInt(changeI)-1
             let changes = prompt(`Silahkan pilih elemen yang akan diganti:\n1.Nominal\n2.Catatan\n3.Tanggal`)
             this.changeTransaksi(changeId, changes)
             alert(`Daftar transaksi:\n${this.lihatTransaksinoAlert()}`)
